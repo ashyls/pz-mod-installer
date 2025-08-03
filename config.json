@@ -1,0 +1,7 @@
+{
+    "steamcmd_path": "stemcmd exe file path",
+    "steam_user": "anonymous",
+    "game_id": "108600",
+    "steamcmd_mods_dir": "steam cmd folder path",
+    "zomboid_mods_dir": "path that you want mod be there"
+}
