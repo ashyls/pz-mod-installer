@@ -100,8 +100,6 @@ def main():
             mod_ids= config["mod_ids"],
             steamcmd_mods_dir= config["steamcmd_mods_dir"]
         )
-
-        print(config)
         
         workshop_path = get_workshop_path(config)
         if not os.path.exists(workshop_path):
