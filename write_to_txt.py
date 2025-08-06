@@ -1,6 +1,6 @@
 import sys
 
-def write_to_txt(data, output_file, delimiter=', '):
+def write_to_txt(data, output_file, delimiter=', ', mode='w'):
     """Writes unique mod IDs to a text file.
 
     Args:
@@ -9,7 +9,7 @@ def write_to_txt(data, output_file, delimiter=', '):
         delimiter: Separator between IDs (default: ', ')
     """
     try:
-        with open(output_file, 'w') as f:
+        with open(output_file, mode) as f:
             f.write(delimiter.join(data))
         
         print(f"✅ Wrote {len(data)} Datas to {output_file}")
