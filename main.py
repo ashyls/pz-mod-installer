@@ -1,7 +1,7 @@
 import json
 from pz_mod_installer import install_pz_mods
 from excel_mod_reader import get_mod_ids
-from mod_list_writer import write_mod_list_to_file
+from write_to_txt import write_to_txt
 from flatten_mods_folder import flatten_mod_folders
 import os
 import time
@@ -82,12 +82,6 @@ def main():
     print(f"✅ Found {len(mod_list)} mods to install")
     print(f"Sample IDs: {', '.join(mod_list[:5])}...")
 
-    # File operations
-    print_header("Creating Mod List File")
-    if not write_mod_list_to_file(mod_list, 'mod_list.txt', ', '):
-        print("⚠️ Warning: Failed to create mod list file")
-        sys.exit(1)
-
     # Configuration display
     print_header("Installation Configuration")
     config_display = config.copy()
@@ -105,7 +99,6 @@ def main():
             game_id= config["game_id"],
             mod_ids= config["mod_ids"],
             steamcmd_mods_dir= config["steamcmd_mods_dir"]
-
         )
 
         print(config)
@@ -116,11 +109,25 @@ def main():
 
         flatten_mod_folders(workshop_path, config["zomboid_mods_dir"])
         print("\n✅ All mods installed and organized successfully!")
+
     except Exception as e:
         print(f"\n❌ Critical Error: {str(e)}", file=sys.stderr)
         sys.exit(1)
     finally:
         print(f"\n⏱️ Process completed at: {time.ctime()}")
+    
+    # File operations
+    print_header("Creating Mod List File")
+    if not write_to_txt(mod_list, 'modId.txt', '; '):
+        print("⚠️ Warning: Failed to create mod list file")
+        sys.exit(1)
+        
+    workshop_entries = os.listdir(config["zomboid_mods_dir"])
+    workshop_list = [entry for entry in workshop_entries if os.path.isdir(os.path.join(config["zomboid_mods_dir"], entry))]
+    print_header("Creating Workshop name List File")
+    if not write_to_txt(workshop_list, 'workshop.txt', '; '):
+        print("⚠️ Warning: Failed to create mod list file")
+        sys.exit(1)
 
 if __name__ == "__main__":
     sys.stdout.reconfigure(line_buffering=True)
