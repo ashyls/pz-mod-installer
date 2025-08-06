@@ -67,11 +67,12 @@ def main():
     print_header("Project Zomboid Mod Installer")
     print(f"Start Time: {time.ctime()}\n")
 
+    flag_input = input("please write your flag to check : ")
     config = load_config()
 
     # Mod processing
     print_header("Reading Mod List")
-    mod_list = get_mod_ids() or get_mod_ids(flag_value='1.0')
+    mod_list = get_mod_ids(flag_value=flag_input)
     
     if not mod_list:
         print("⚠️ Error: No mods found to install!")
