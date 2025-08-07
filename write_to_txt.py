@@ -11,8 +11,6 @@ def write_to_txt(data, output_file, delimiter=', ', mode='w'):
     try:
         with open(output_file, mode) as f:
             f.write(delimiter.join(data))
-        
-        print(f"✅ Wrote {len(data)} Datas to {output_file}")
         return True
         
     except Exception as e:

@@ -2,7 +2,7 @@ from excel_reader import get_excel_columns
 import sys
 from collections import Counter
 
-def get_mod_ids(file_path='Book1.xlsx', value_col='D', flag_col='G', flag_value='1'):
+def get_mod_ids(file_path='Book1.xlsx', value_col='D', value2_col='E', flag_col='G', flag_value='1'):
     """
     Enhanced version with detailed debugging output and duplicate detection
     Returns: list of unique mod IDs, reports duplicates
@@ -16,18 +16,24 @@ def get_mod_ids(file_path='Book1.xlsx', value_col='D', flag_col='G', flag_value=
         print("\n[1/3] Reading Excel columns...")
         data = get_excel_columns(
             file_path=file_path,
-            desired_columns=[value_col, flag_col]
+            desired_columns=[value_col, value2_col, flag_col]
         )
         print(f"Raw data keys: {list(data.keys())}")
         
         value_key = f'Column_{value_col}'
+        value2_key = f'Column_{value2_col}'
         flag_key = f'Column_{flag_col}'
         
         if value_key not in data:
             print(f"❌ ERROR: Column {value_col} not found in Excel data")
             print(f"Available columns: {[k.replace('Column_','') for k in data.keys()]}")
             return []
-            
+        
+        if value2_key not in data:
+            print(f"❌ ERROR: Column {value2_col} not found in Excel data")
+            print(f"Available columns: {[k.replace('Column_','') for k in data.keys()]}")
+            return []    
+        
         if flag_key not in data:
             print(f"❌ ERROR: Column {flag_col} not found in Excel data")
             return []
@@ -37,6 +43,7 @@ def get_mod_ids(file_path='Book1.xlsx', value_col='D', flag_col='G', flag_value=
         print(f"{flag_col} (first 5): {data[flag_key][:5]}")
         
         mod_ids = []
+        mod_names = []
         duplicates = []
         min_length = min(len(data[value_key]), len(data[flag_key]))
         print(f"\n[3/3] Processing {min_length} rows...")
@@ -45,6 +52,7 @@ def get_mod_ids(file_path='Book1.xlsx', value_col='D', flag_col='G', flag_value=
         for i in range(min_length):
             flag_val = data[flag_key][i]
             mod_val = data[value_key][i]
+            name_val = data[value2_key][i]
             
             if i % 20 == 0 and i > 0:
                 print(f"  Processed {i} rows... Found {found_count} mods so far")
@@ -60,6 +68,7 @@ def get_mod_ids(file_path='Book1.xlsx', value_col='D', flag_col='G', flag_value=
                                 print(f"  ! Duplicate found: {mod_id} (Row {i+1})")
                             else:
                                 mod_ids.append(mod_id)
+                                mod_names.append(name_val)
                                 found_count += 1
                                 
                         except (ValueError, TypeError) as e:
@@ -92,7 +101,7 @@ def get_mod_ids(file_path='Book1.xlsx', value_col='D', flag_col='G', flag_value=
         if len(mod_ids) > 0:
             print(f"\nSample of first 5 unique IDs: {mod_ids[:5]}...")
         
-        return mod_ids
+        return [mod_names , mod_ids]
         
     except Exception as e:
         print(f"❌ CRITICAL ERROR: {str(e)}", file=sys.stderr)

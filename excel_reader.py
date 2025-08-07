@@ -1,6 +1,6 @@
 from openpyxl import load_workbook
 
-def get_excel_columns(file_path='Book1.xlsx', desired_columns=['D', 'G']):
+def get_excel_columns(file_path='Book1.xlsx', desired_columns=['D', 'E', 'G']):
     """
     Get specific columns from an Excel file and return them as a dictionary.
     

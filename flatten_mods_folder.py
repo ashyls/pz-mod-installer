@@ -12,10 +12,8 @@ def flatten_mod_folders(workshop_path, zomboid_mods_dir):
     print("\n♻️ Reorganizing mod folders...")
     moved_count = 0
     
-    # Create destination directory if it doesn't exist
     os.makedirs(zomboid_mods_dir, exist_ok=True)
     
-    # Verify workshop path exists
     if not os.path.exists(workshop_path):
         raise FileNotFoundError(f"Workshop path not found: {workshop_path}")
     
@@ -31,12 +29,10 @@ def flatten_mod_folders(workshop_path, zomboid_mods_dir):
             
             print(f"  Processing: {content_folder}")
             
-            # Remove existing if present
             if os.path.exists(dest):
                 print(f"    Removing existing: {content_folder}")
                 shutil.rmtree(dest)
             
-            # Move to destination
             try:
                 shutil.move(src, dest)
                 moved_count += 1
