@@ -176,7 +176,8 @@ def main():
     print_header("Mod Installation")
     try:
         print_status(f"Starting installation of {len(all_mod_ids)} mods...")
-        
+        print(f"\n{Color.CYAN}Total mods to download: {len(all_mod_ids)}{Color.RESET}\n")
+
         install_pz_mods(
             steamcmd_path=config["steamcmd_path"],
             steam_user=config["steam_user"],
